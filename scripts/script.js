@@ -43,16 +43,18 @@ function runTest() {
 	5 - different && random walk
 	6 - different && random direction         */
 
+
 	var RDK = 3;
 
-	/*
-	Shape of aperture
-	1 - Circle
-	2 - Ellipse
-	3 - Square
-	4 - Rectangle
-	*/
-	var apertureType = 2;
+	// The shape of aperture
+	const apertureShape = {
+		CIRCLE: 1,
+		ELLIPSE: 2,
+		SQUARE: 3,
+		RECTANGLE: 4,
+	}
+
+	var apertureType = apertureShape.CIRCLE;
 
 	/*
 	Out of Bounds Decision

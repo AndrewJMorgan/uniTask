@@ -1,24 +1,4 @@
-
-
-/*
-
-		RDK plugin for JsPsych
-    ----------------------
-
-		This code was created in the Consciousness and Metacognition Lab at UCLA,
-		under the supervision of Brian Odegaard and Hakwan Lau
-
-    ----------------------
-
-		Copyright (C) 2017  Sivananda Rajananda
-
-*/
-
 function runTest() {
-	console.log("Start");
-	//--------------------------------------
-	//---------SET PARAMETERS BEGIN---------
-	//--------------------------------------
 	var rand = Math.floor((Math.random() * 2) + 1)-1; 
 	var temp = [0, 180];
 	var nApertures = 1; //The number of apertures

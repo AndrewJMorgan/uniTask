@@ -845,7 +845,7 @@ function runTest() {
 				}
 			}
 }
-
+var totalgoal = 20;
 var leftpress = 0;
 var rightpress = 0;
 var misses = 0;
@@ -860,7 +860,7 @@ document.addEventListener('keydown', function(event) {
 		if (coherentDirection == 180) {
 			console.log("correct");
 				goal = goal + 1;
-				
+				moveProgress();
 		} else {
 			console.log("bad");
 				misses = misses + 1;
@@ -873,6 +873,7 @@ document.addEventListener('keydown', function(event) {
 		if (coherentDirection == 0) {
 			console.log("correct");
 			goal = goal + 1;
+			moveProgress();
 		} else {
 			console.log("bad");
 				misses = misses + 1;
@@ -899,4 +900,19 @@ function move() {
 			clearInterval(x);
 		}
 	}, 1000);
+}
+
+function moveProgress() {
+	console.log("?");
+	var elem = document.getElementById("myBar2");
+	var width = 100;
+	var distance = totalgoal - goal;
+		
+	width = (goal / totalgoal) * 100;
+	elem.style.width = width + '%'; //setting the width
+	elem.innerHTML = width  + '%'; //setting the text
+
+	if (distance <= 0) {
+		
+	}
 }

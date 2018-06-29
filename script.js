@@ -27,7 +27,7 @@ function runTest() {
 	coherentDirection = temp[rand]; //The direction of the coherentDots in degrees. Starts at 3 o'clock and goes counterclockwise (0 == rightwards, 90 == upwards, 180 == leftwards, 270 == downwards), range 0 - 360
 
 	var coherence = 0.3; //Proportion of dots to move together, range from 0 to 1
-	var oppositeCoherence = 0.5; // The coherence for the dots going the opposite direction as the coherent dots
+	var oppositeCoherence = 0; // The coherence for the dots going the opposite direction as the coherent dots
 	var dotRadius = 4; //Radius of each dot in pixels
 	var dotLife = 20;//How many frames a dot will keep following its trajectory before it is redrawn at a random location. -1 denotes infinite life (the dot will only be redrawn if it reaches the end of the aperture).
 	var moveDistance = 3; //How many pixels the dots move per frame
@@ -37,7 +37,9 @@ function runTest() {
 	var backgroundColor = "gray"; //Color of the background
 	var apertureCenterX = [window.innerWidth/2]; // The x-coordinate of center of the aperture on the screen, in pixels
 	var apertureCenterY = window.innerHeight/2; // The y-coordinate of center of the aperture on the screen, in pixels
-
+	
+	trialtime = new Date().getTime(); //newcode
+	
 
 	/* RDK type parameter
 	** See Fig. 1 in Scase, Braddick, and Raymond (1996) for a visual depiction of these different signal selection rules and noise types
@@ -853,29 +855,42 @@ var goal = 0;
 var stopDotMotion = false;
 var coherentDirection = null; //The direction of the coherentDots in degrees. Starts at 3 o'clock and goes counterclockwise (0 == rightwards, 90 == upwards, 180 == leftwards, 270 == downwards), range 0 - 360
 var frameRequestID = null;
+var speedms = 0;
+var trialtime = 0;
+
 runTest();
 document.addEventListener('keydown', function(event) {
     if(event.keyCode == 65) {
+		speedms = new Date().getTime() - trialtime;
 		leftpress = leftpress + 1;
 		if (coherentDirection == 180) {
 			console.log("correct");
+			console.log(trialtime);
+			console.log(speedms);
 				goal = goal + 1;
 				moveProgress();
 		} else {
 			console.log("bad");
+			console.log(trialtime);
+			console.log(speedms);
 				misses = misses + 1;
 		}
 		stopDotMotion = true;
 		runTest();
     }
     else if(event.keyCode == 76) {
+		speedms = new Date().getTime() - trialtime;
 		rightpress = rightpress + 1;
 		if (coherentDirection == 0) {
 			console.log("correct");
+			console.log(trialtime);
+			console.log(speedms);
 			goal = goal + 1;
 			moveProgress();
 		} else {
 			console.log("bad");
+			console.log(trialtime);
+			console.log(speedms);
 				misses = misses + 1;
 		}
 		stopDotMotion = true;
@@ -898,12 +913,12 @@ function move() {
 
 		if (distance <= 0) {
 			clearInterval(x);
+			window.alert("Trial Complete");
 		}
 	}, 1000);
 }
 
 function moveProgress() {
-	console.log("?");
 	var elem = document.getElementById("myBar2");
 	var width = 100;
 	var distance = totalgoal - goal;
@@ -913,6 +928,6 @@ function moveProgress() {
 	elem.innerHTML = width  + '%'; //setting the text
 
 	if (distance <= 0) {
-		
+		window.alert("Trial Complete");
 	}
 }

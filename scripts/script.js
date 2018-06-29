@@ -1,10 +1,27 @@
+//Constant variables
+const apertureShape = {
+	CIRCLE: 0,
+	ELLIPSE: 1,
+	SQUARE: 2,
+	RECTANGLE: 3,
+}
+
+const direction = {
+	RIGHT: 0,
+	UP: 90,
+	LEFT: 180,
+	DOWN: 270,
+}
+
+function getRandomDirection() {
+	return (Math.random() >= 0.5) ? direction.LEFT : direction.RIGHT;
+}
+
 function runTest() {
-	var rand = Math.floor((Math.random() * 2) + 1)-1; 
-	var temp = [0, 180];
 	var nApertures = 1; //The number of apertures
 	var nDots = [100]; //Number of dots per set (equivalent to number of dots per frame)
 	var nSets = 1; //Number of sets to cycle through per frame
-	coherentDirection = temp[rand]; //The direction of the coherentDots in degrees. Starts at 3 o'clock and goes counterclockwise (0 == rightwards, 90 == upwards, 180 == leftwards, 270 == downwards), range 0 - 360
+	coherentDirection = getRandomDirection(); //The direction of the coherentDots in degrees. Starts at 3 o'clock and goes counterclockwise (0 == rightwards, 90 == upwards, 180 == leftwards, 270 == downwards), range 0 - 360
 
 	var coherence = 0.3; //Proportion of dots to move together, range from 0 to 1
 	var oppositeCoherence = 0.5; // The coherence for the dots going the opposite direction as the coherent dots
@@ -42,19 +59,9 @@ function runTest() {
 	4 - different && random position
 	5 - different && random walk
 	6 - different && random direction         */
-
-
 	var RDK = 3;
 
-	// The shape of aperture
-	const apertureShape = {
-		CIRCLE: 1,
-		ELLIPSE: 2,
-		SQUARE: 3,
-		RECTANGLE: 4,
-	}
-
-	var apertureType = apertureShape.CIRCLE;
+	var apertureType = apertureShape.ELLIPSE;
 
 	/*
 	Out of Bounds Decision
@@ -289,12 +296,9 @@ function runTest() {
 
 			//Initialize the parameters for the aperture for further calculation
 			function initializeApertureDimensions() {
-				//For circle and square
-				if (apertureType == 1 || apertureType == 3) {
+				if (apertureType == apertureShape.CIRCLE || apertureType == apertureShape.SQUARE) {
 					horizontalAxis = verticalAxis = apertureWidth / 2;
-				}
-				//For ellipse and rectangle
-				else if (apertureType == 2 || apertureType == 4) {
+				} else if (apertureType == apertureShape.ELLIPSE || apertureType == apertureShape.RECTANGLE) {
 					horizontalAxis = apertureWidth / 2;
 					verticalAxis = apertureHeight / 2;
 				}
@@ -485,7 +489,7 @@ function runTest() {
 		if(border === true){
 
 			//For circle and ellipse
-			if(apertureType === 1 || apertureType === 2){
+			if(apertureType === apertureShape.CIRCLE || apertureType === 2){
 			ctx.lineWidth = borderWidth;
 			ctx.strokeStyle = borderColor;
 			ctx.beginPath();
@@ -606,7 +610,7 @@ function runTest() {
 			//Function to check if dot is out of bounds
 			function outOfBounds(dot) {
 				//For circle and ellipse
-				if (apertureType == 1 || apertureType == 2) {
+				if (apertureType == apertureShape.CIRCLE || apertureType == apertureShape.ELLIPSE) {
 					if (dot.x < xValueNegative(dot.y) || dot.x > xValuePositive(dot.y) || dot.y < yValueNegative(dot.x) || dot.y > yValuePositive(dot.x)) {
 						return true;
 					} else {
@@ -614,7 +618,7 @@ function runTest() {
 					}
 				}
 				//For square and rectangle
-				if (apertureType == 3 || apertureType == 4) {
+				if (apertureType == apertureShape.SQUARE || apertureType == apertureShape.RECTANGLE) {
 					if (dot.x < (apertureCenterX) - horizontalAxis || dot.x > (apertureCenterX) + horizontalAxis || dot.y < (apertureCenterY) - verticalAxis || dot.y > (apertureCenterY) + verticalAxis) {
 						return true;
 					} else {
@@ -684,7 +688,7 @@ function runTest() {
 			//Calculates a random position on the opposite edge to reinsert the dot
 			function reinsertOnOppositeEdge(dot) {
 				//If it is a circle or ellipse
-				if (apertureType == 1 || apertureType == 2) {
+				if (apertureType == apertureShape.CIRCLE || apertureType == apertureShape.ELLIPSE) {
 					//Bring the dot back into the aperture by moving back one step
 					dot.x -= dot.latestXMove;
 					dot.y -= dot.latestYMove;
@@ -704,7 +708,7 @@ function runTest() {
 				} //End of if apertureType == 1 | == 2
 
 				//If it is a square or rectangle, re-insert on one of the opposite edges
-				if (apertureType == 3 || apertureType == 4) {
+				if (apertureType == apertureShape.SQUARE || apertureType == apertureShape.RECTANGLE) {
 
 					/* The formula for calculating whether a dot appears from the vertical edge (left or right edges) is dependent on the direction of the dot and the ratio of the vertical and horizontal edge lengths.
 					E.g.
@@ -750,7 +754,7 @@ function runTest() {
 							dot.x = randomNumberBetween((apertureCenterX) - horizontalAxis, (apertureCenterX) + horizontalAxis)
 						}
 					}
-				} //End of apertureType == 3
+				} //End of apertureType == apertureShape.SQUARE
 				return dot;
 			} //End of reinsertOnOppositeEdge
 
@@ -780,9 +784,7 @@ function runTest() {
 
 			//Calculate a random x and y coordinate in the ellipse
 			function resetLocation(dot) {
-
-				//For circle and ellipse
-				if (apertureType == 1 || apertureType == 2) {
+				if (apertureType == apertureShape.CIRCLE || apertureType == apertureShape.ELLIPSE) {
 					var phi = randomNumberBetween(-Math.PI, Math.PI);
 					var rho = Math.random();
 
@@ -794,13 +796,10 @@ function runTest() {
 
 					dot.x = x;
 					dot.y = y;
-				}
-				//For square and rectangle
-				else if (apertureType == 3 || apertureType == 4) {
+				} else if (apertureType == apertureShape.SQUARE || apertureType == apertureShape.RECTANGLE) {
 					dot.x = randomNumberBetween((apertureCenterX) - horizontalAxis, (apertureCenterX) + horizontalAxis); //Between the left and right edges of the square / rectangle
 					dot.y = randomNumberBetween((apertureCenterY) - verticalAxis, (apertureCenterY) + verticalAxis); //Between the top and bottom edges of the square / rectangle
 				}
-
 				return dot;
 			}
 
